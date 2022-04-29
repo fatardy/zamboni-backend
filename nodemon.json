@@ -1,0 +1,6 @@
+{
+    "events": {
+        "restart": "node ./scripts/handleLogs.js",
+        "start": "node ./scripts/handleLogs.js"
+    }
+}
