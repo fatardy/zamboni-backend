@@ -5,7 +5,7 @@ const initializeLogger = require('./config/initializers/logger');
 
 initializeLogger();
 
-const { main: initializeDatabase } = require('./config/initializers/database');
+const initializeDatabase = require('./config/initializers/database');
 const initializeServer = require('./config/initializers/server');
 const initializeCrons = require('./config/initializers/crons');
 
@@ -17,6 +17,9 @@ logger.info(':.. Zamboni Rentals ');
 
 process.on('unhandledRejection', (reason, p) => {
   logger.error(`Unhandled rejection at: Promise ${p}, reason ${reason}`);
+});
+process.on('uncaughtException', (error) => {
+  logger.error(`uncaughtException ${error.message}`);
 });
 
 async function start() {
