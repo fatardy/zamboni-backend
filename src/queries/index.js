@@ -1,21 +1,22 @@
-const conn = require('../config/initializers/database');
+const { db } = require('../config/initializers/database');
 
-const db = conn();
+// const db = getDB();
 
 async function dbTest() {
-  try {
-    const q = `
-        create table if not exists test_table;
-        select * from table;
+//   console.log(db);
+    try {
+        const q = `
+      SELECT * FROM users;
     `;
-    const c = await db.con;
-    const data = await db.query(q);
-    console.log(data);
-  } catch (err) {
-    console.log(err);
-  }
+        // console.log(db);
+        // console.log(db());
+        const [data, fields] = await db.query(q);
+        console.log(data);
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 module.exports = {
-  dbTest,
+    dbTest,
 };

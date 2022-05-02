@@ -13,72 +13,72 @@ const morganLogger = winston.loggers.get('morganLogger');
 const logger = winston.loggers.get('logger');
 
 function bodyParserErrorChecker(err, req, res, next) {
-  if (err instanceof SyntaxError) {
-    return res
-      .status(constants.STATUS.BAD_REQUEST)
-      .json({
-        status: false,
-        error: {
-          message: 'Syntax error in the request',
-        },
-      });
-  }
-  return next();
+    if (err instanceof SyntaxError) {
+        return res
+            .status(constants.STATUS.BAD_REQUEST)
+            .json({
+                status: false,
+                error: {
+                    message: 'Syntax error in the request',
+                },
+            });
+    }
+    return next();
 }
 
 function apiNotFound(req, res) {
-  return res
-    .status(constants.STATUS.NOT_FOUND)
-    .json({
-      status: false,
-      error: {
-        message: 'No dragons in this mire',
-      },
-    });
+    return res
+        .status(constants.STATUS.NOT_FOUND)
+        .json({
+            status: false,
+            error: {
+                message: 'No dragons in this mire',
+            },
+        });
 }
 
 function main() {
-  return new Promise((resolve, reject) => {
-    const app = express();
+    return new Promise((resolve, reject) => {
+        const app = express();
 
-    app.use(cors({
-      origin: [
-        'http://localhost:3000',
-      ],
-      credentials: true,
-    }));
-    app.options('*', cors());
-    app.disable('etag');
-    app.set('etag', false);
+        app.use(cors({
+            origin: [
+                'http://localhost:3000',
+            ],
+            credentials: true,
+        }));
+        app.options('*', cors());
+        app.disable('etag');
+        app.set('etag', false);
 
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
-    app.use(express.raw());
-    app.use(bodyParserErrorChecker);
+        app.use(express.urlencoded({ extended: true }));
+        app.use(express.json());
+        app.use(express.raw());
+        app.use(bodyParserErrorChecker);
 
-    app.use(helmet());
+        app.use(helmet());
 
-    app.use(morgan('combined', {
-      stream: { write: (msg) => morganLogger.info(msg.trim()) },
-    }));
-    app.use(morgan('dev', {
-      stream: { write: (msg) => logger.info(msg.trim()) },
-    }));
+        app.use(morgan('combined', {
+            stream: { write: (msg) => morganLogger.info(msg.trim()) },
+        }));
+        app.use(morgan('dev', {
+            stream: { write: (msg) => logger.info(msg.trim()) },
+        }));
 
-    // app.use('/api/admin', adminApi);
-    // app.use('/api', api);
-    app.use('/', apiNotFound);
+        // app.use('/api/admin', adminApi);
+        // app.use('/api', api);
+        app.use('/', apiNotFound);
 
-    const server = http.createServer(app);
-    server.listen(process.env.PORT, (err) => {
-      if (err) {
-        return reject(new Error(`Error on server.listen - ${err}`));
-      }
+        const server = http.createServer(app);
+        server.listen(process.env.PORT, (err) => {
+            if (err) {
+                return reject(new Error(`Error on server.listen - ${err}`));
+            }
 
-      logger.info(`:.. Dragons on ..: ${process.env.PORT}`);
-      return resolve();
+            logger.info(`:.. Dragons on ..: ${process.env.PORT}`);
+            return resolve();
+        });
     });
-  });
 }
 
 module.exports = main;
