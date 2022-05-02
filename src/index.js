@@ -8,6 +8,7 @@ initializeLogger();
 const initializeDatabase = require('./config/initializers/database');
 const initializeServer = require('./config/initializers/server');
 const initializeCrons = require('./config/initializers/crons');
+const { dbTest } = require('./queries');
 
 dotenv.config();
 
@@ -33,3 +34,7 @@ async function start() {
 }
 
 start();
+
+// setTimeout(() => {
+//   dbTest();
+// }, 1000);
