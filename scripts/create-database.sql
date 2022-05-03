@@ -16,7 +16,10 @@ CREATE TABLE users (
     zipCode VARCHAR(8),
     country VARCHAR(50),
     deviceId VARCHAR(30),
+    avatar VARCHAR(300),
     userType CHAR(1), -- discrimiator
+
+    isAdmin BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY (userId)
 );

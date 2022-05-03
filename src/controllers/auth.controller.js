@@ -50,7 +50,7 @@ async function protectRoutes(req, res, next) {
     try {
         const [[userData]] = await db.query(
             `SELECT * FROM users
-            WHERE userId = 200
+            WHERE userId = ${decoded.userId}
             LIMIT 1;`,
         );
         // if userData is empty, it will be undefined;

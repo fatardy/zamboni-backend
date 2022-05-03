@@ -34,23 +34,23 @@ const auth = {
 
 };
 
-// const auth = {
+const user = {
 
-// };
+    edit: Joi.object().keys({
+        firstName: trimStringAllowEmpty,
+        lastName: trimStringAllowEmpty,
+        phoneNumber: numberAllowEmpty,
+        street1: trimStringAllowEmpty,
+        street2: trimStringAllowEmpty,
+        city: trimStringAllowEmpty,
+        stateName: trimStringAllowEmpty,
+        zipCode: trimStringAllowEmpty,
+        country: trimStringAllowEmpty,
+        deviceId: trimStringAllowEmpty,
+        avatar: trimStringAllowEmpty,
+    }),
 
-// const user = {
-
-//     edit: Joi.object().keys({
-//         username: trimStringAllowEmpty,
-//         fullname: trimStringAllowEmpty,
-//         avatar: trimStringAllowEmpty,
-//         about: trimStringAllowEmpty,
-//         gender: trimStringAllowEmpty,
-//         deviceId: trimStringAllowEmpty,
-//         extraInfo: any,
-//     }),
-
-// };
+};
 
 // const group = {
 
@@ -118,5 +118,5 @@ const auth = {
 
 module.exports = {
     auth,
-
+    user,
 };
