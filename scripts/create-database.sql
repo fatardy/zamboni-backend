@@ -21,13 +21,13 @@ CREATE TABLE users (
     PRIMARY KEY (userId)
 );
 
-ALTER TABLE users ADD CONSTRAINT constCheckUserType
-    CHECK (userType IN ('C', 'I'));
+-- ALTER TABLE users ADD CONSTRAINT constCheckUserType
+--     CHECK (userType IN ('C', 'I'));
 
 CREATE TABLE otps (
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     otp INT(6) NOT NULL,
-    userId INT(10) UNSIGNED NOT NULL,
+    userId INT(10) UNSIGNED NOT NULL UNIQUE,
 
     PRIMARY KEY (id),
     FOREIGN KEY (userId) REFERENCES users(userId)
