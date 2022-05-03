@@ -2,12 +2,70 @@ const { loggers } = require('winston');
 const { db } = require('../config/initializers/database');
 const schemaHelper = require('../helpers/schema.helper').auth;
 const responseHelper = require('../helpers/response.helper');
-const tokenHelper = require('../helpers/jwt.helper');
+const jwtHelper = require('../helpers/jwt.helper');
 
 const logger = loggers.get('logger');
 
 function generateOtp() {
     return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+async function generateAccessToken(req, res) {
+    const { user } = res.locals;
+    if (!user) {
+        logger.error('auth generateAccessToken error');
+        return responseHelper.badRequestResponse(res, 'generateAccessToken error');
+    }
+
+    // TODO: add deviceId also, so you can only login from one place;
+    const token = jwtHelper.createAccessToken({ userId: user.userId });
+
+    let isNewUser = false;
+    if (!user.firstName) {
+        isNewUser = true;
+    }
+
+    return res.json({
+        status: true,
+        isNewUser,
+        data: user,
+        access_token: token,
+    });
+}
+
+async function protectRoutes(req, res, next) {
+    const token = req.headers.access_token;
+    if (!token) {
+        return responseHelper.unAuthorizedResponse(res, 'Where is token, chinnaw?');
+    }
+
+    let decoded;
+    try {
+        decoded = jwtHelper.verifyAccessToken(token);
+    } catch (err) {
+        logger.error(`ERR auth protect verify > ${err}`);
+        return responseHelper.unAuthorizedResponse(res, `Token verification failed - ${err}`);
+    }
+
+    try {
+        const [[userData]] = await db.query(
+            `SELECT * FROM users
+            WHERE userId = 200
+            LIMIT 1;`,
+        );
+        // if userData is empty, it will be undefined;
+        if (userData == null) {
+            return responseHelper.unAuthorizedResponse(res, 'Invalid user. User is null, chinnaw?');
+        }
+
+        res.locals.decoded = decoded;
+        res.locals.user = userData;
+
+        return next();
+    } catch (err) {
+        logger.error(`ERR auth protect find > ${err}`);
+        return responseHelper.serverErrorResponse(res, err);
+    }
 }
 
 async function updateOtpForUser(email, userId) {
@@ -26,6 +84,8 @@ async function updateOtpForUser(email, userId) {
 }
 
 const userCtrl = {
+
+    generateAccessToken,
 
     authorize: async (req, res) => {
         const { error, value } = schemaHelper.authorize.validate(req.body);
@@ -89,7 +149,7 @@ const userCtrl = {
         }
     },
 
-    verifyOtp: async (req, res) => {
+    verifyOtp: async (req, res, next) => {
         const { error, value } = schemaHelper.verifyOtp.validate(req.body);
         if (error) {
             return responseHelper.joiErrorResponse(res, error);
@@ -129,7 +189,10 @@ const userCtrl = {
                 `DELETE FROM otps WHERE userId = ${userId};`,
             );
 
-            return responseHelper.successResponse(res, user[0]);
+            // eslint-disable-next-line prefer-destructuring
+            res.locals.user = user[0];
+
+            return next();
         } catch (err) {
             logger.error(`auth verifyOtp > ${err}`);
             return responseHelper.serverErrorResponse(res, err);
@@ -142,4 +205,5 @@ const adminCtrl = {};
 module.exports = {
     userCtrl,
     adminCtrl,
+    protectRoutes,
 };
