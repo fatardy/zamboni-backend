@@ -36,9 +36,9 @@ async function start() {
 
 start();
 
-setTimeout(() => {
-    dbTest();
-    setTimeout(() => {
-        doIt();
-    }, 1000);
-}, 1000);
+// setTimeout(() => {
+//     dbTest();
+//     setTimeout(() => {
+//         doIt();
+//     }, 1000);
+// }, 1000);

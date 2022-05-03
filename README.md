@@ -9,3 +9,5 @@
 # DB CMD line connection:
     * mysql -u ardy -pasdfQWER12# zamboni
     * mysql -u root -pasdfqwer12#
+
+    https://stackoverflow.com/questions/17631363/delete-records-after-15-minutes

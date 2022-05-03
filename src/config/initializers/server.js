@@ -6,8 +6,8 @@ const morgan = require('morgan');
 const winston = require('winston');
 
 const constants = require('../constants');
-// const api = require('../../api/customer');
-// const adminApi = require('../../api/admin');
+const userApi = require('../../routes/user');
+const adminApi = require('../../routes/admin');
 
 const morganLogger = winston.loggers.get('morganLogger');
 const logger = winston.loggers.get('logger');
@@ -44,6 +44,7 @@ function main() {
         app.use(cors({
             origin: [
                 'http://localhost:3000',
+                'http://localhost:4200',
             ],
             credentials: true,
         }));
@@ -65,8 +66,8 @@ function main() {
             stream: { write: (msg) => logger.info(msg.trim()) },
         }));
 
-        // app.use('/api/admin', adminApi);
-        // app.use('/api', api);
+        app.use('/api/admin', adminApi);
+        app.use('/api/user', userApi);
         app.use('/', apiNotFound);
 
         const server = http.createServer(app);

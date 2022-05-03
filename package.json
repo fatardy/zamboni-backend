@@ -1,5 +1,5 @@
 {
-  "name": "viceroy-backend",
+  "name": "zamboni-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -25,6 +25,7 @@
     "fs-extra": "^10.1.0",
     "helmet": "^5.0.2",
     "joi-objectid": "^4.0.2",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
