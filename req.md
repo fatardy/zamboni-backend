@@ -45,7 +45,8 @@
     - auth
         * signup
         * login
-        * forgot password
+        * forgot password ?necessary
+        * change password ?necessary
     - user
         * edit user
         * view user data ?dont need user by id

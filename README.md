@@ -1,4 +1,8 @@
-# DB SETUP:
+# Zamboni Rentals - Backend
+Aradhya Alamuru <ardy@nyu.edu>
+
+
+### DB SETUP:
     * create user:
     ```CREATE USER 'ardy'@'localhost' IDENTIFIED BY 'asdfQWER12#';```
     * grant privilages:
@@ -6,7 +10,7 @@
     * flush grant tables:
     ```FLUSH PRIVILAGES;```
 
-# DB CMD line connection:
+### DB CMD line connection:
     * mysql -u ardy -pasdfQWER12# zamboni
     * mysql -u root -pasdfqwer12#
 
