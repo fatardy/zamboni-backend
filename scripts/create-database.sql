@@ -5,18 +5,18 @@ USE zamboni;
 
 CREATE TABLE users (
     userId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    firstName VARCHAR(300) NOT NULL,
-    lastName VARCHAR(300) NOT NULL,
-    phoneNumber INT(10) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    street1 VARCHAR(50) NOT NULL,
+    firstName VARCHAR(300),
+    lastName VARCHAR(300),
+    phoneNumber INT(10),
+    email VARCHAR(50) NOT NULL UNIQUE,
+    street1 VARCHAR(50),
     street2 VARCHAR(50),
-    city VARCHAR(50) NOT NULL,
-    stateName VARCHAR(50) NOT NULL, -- `state` seems to be a reserved keyword
-    zipCode VARCHAR(8) NOT NULL,
-    country VARCHAR(50) NOT NULL,
+    city VARCHAR(50),
+    stateName VARCHAR(50), -- `state` seems to be a reserved keyword
+    zipCode VARCHAR(8),
+    country VARCHAR(50),
     deviceId VARCHAR(30),
-    userType CHAR(1) NOT NULL, -- discrimiator
+    userType CHAR(1), -- discrimiator
 
     PRIMARY KEY (userId)
 );
@@ -24,10 +24,10 @@ CREATE TABLE users (
 ALTER TABLE users ADD CONSTRAINT constCheckUserType
     CHECK (userType IN ('C', 'I'));
 
-
 CREATE TABLE otps (
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     otp INT(6) NOT NULL,
+    userId INT(10) UNSIGNED NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (userId) REFERENCES users(userId)

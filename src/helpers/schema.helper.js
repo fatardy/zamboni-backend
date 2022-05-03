@@ -19,7 +19,7 @@ const auth = {
 
     authorize: Joi.object().keys({
         email: email.lowercase().required(),
-        // deviceId: trimStringRequired,
+        deviceId: trimStringRequired,
     }),
 
     sendOtp: Joi.object().keys({
