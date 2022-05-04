@@ -1,6 +1,6 @@
 const { loggers } = require('winston');
 const { db } = require('../config/initializers/database');
-const schemaHelper = require('../helpers/schema.helper').vehicleClass;
+const schemaHelper = require('../helpers/schema.helper').vehicleType;
 const responseHelper = require('../helpers/response.helper');
 
 const logger = loggers.get('logger');
@@ -19,7 +19,7 @@ const adminCtrl = {
         } = value;
 
         try {
-            const q = `INSERT INTO vehicleClass (
+            const q = `INSERT INTO vehicleTypes (
                 name, 
                 rate,
                 overFee
@@ -33,7 +33,7 @@ const adminCtrl = {
 
             return responseHelper.successResponse(res, data);
         } catch (err) {
-            logger.error(`vehicleClass create > ${err}`);
+            logger.error(`vehicleTypes create > ${err}`);
             return responseHelper.serverErrorResponse(res, err);
         }
     },
@@ -51,7 +51,7 @@ const adminCtrl = {
         } = value;
 
         try {
-            const q = `UPDATE vehicleClass SET
+            const q = `UPDATE vehicleTypes SET
                 name = '${name || ''}', 
                 rate = ${rate || 0}, 
                 overFee = ${overFee || 0}
@@ -64,7 +64,7 @@ const adminCtrl = {
 
             return responseHelper.successResponse(res, data);
         } catch (err) {
-            logger.error(`vehicleClass update > ${err}`);
+            logger.error(`vehicleTypes update > ${err}`);
             return responseHelper.serverErrorResponse(res, err);
         }
     },
@@ -72,13 +72,13 @@ const adminCtrl = {
     getAll: async (req, res) => {
         try {
             const [data] = await db.query(
-                'SELECT * FROM vehicleClass;',
+                'SELECT * FROM vehicleTypes;',
             );
             // console.log(data);
 
             return responseHelper.successResponse(res, data == null ? [] : data);
         } catch (err) {
-            logger.error(`vehicleClass getAll > ${err}`);
+            logger.error(`vehicleTypes getAll > ${err}`);
             return responseHelper.serverErrorResponse(res, err);
         }
     },
@@ -87,11 +87,11 @@ const adminCtrl = {
         const { vcId } = req.params;
         try {
             const [data] = await db.query(
-                `DELETE FROM vehicleClass WHERE vcId = ${vcId};`,
+                `DELETE FROM vehicleTypes WHERE vcId = ${vcId};`,
             );
             return responseHelper.successResponse(res, data);
         } catch (err) {
-            logger.error(`vehicleClass delete > ${err}`);
+            logger.error(`vehicleTypes delete > ${err}`);
             return responseHelper.serverErrorResponse(res, err);
         }
     },

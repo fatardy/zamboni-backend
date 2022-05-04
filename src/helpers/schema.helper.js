@@ -82,7 +82,7 @@ const location = {
 
 };
 
-const vehicleClass = {
+const vehicleType = {
 
     create: Joi.object().keys({
         name: trimStringAllowEmpty,
@@ -168,5 +168,5 @@ module.exports = {
     auth,
     user,
     location,
-    vehicleClass,
+    vehicleType,
 };

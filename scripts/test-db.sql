@@ -71,13 +71,13 @@ CREATE TABLE otps (
     FOREIGN KEY (userId) REFERENCES users(userId)
 );
 
-CREATE TABLE vehicleClass (
-    vcId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE vehicleTypes (
+    vtId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     rate DECIMAL(9, 2) NOT NULL,
     overFee DECIMAL(9, 2) NOT NULL,
 
-    PRIMARY KEY (vcId)
+    PRIMARY KEY (vtId)
 );
 
 
@@ -98,17 +98,17 @@ CREATE TABLE locations (
 
 -- TODO: create intersections;
 
-CREATE TABLE locations_vehicleClass (
+CREATE TABLE locations_vehicleTypes (
     vehId VARCHAR(17) NOT NULL, -- vehicle identification
     make VARCHAR(30) NOT NULL,
     model VARCHAR(30) NOT NULL,
     licencePlate VARCHAR(10) NOT NULL,
     locId INT(10) UNSIGNED NOT NULL,
-    vcId INT(10) UNSIGNED NOT NULL,
+    vtId INT(10) UNSIGNED NOT NULL,
 
     PRIMARY KEY (vehId),
     FOREIGN KEY (locId) REFERENCES locations(locId),
-    FOREIGN KEY (vcId) REFERENCES vehicleClass(vcId)
+    FOREIGN KEY (vtId) REFERENCES vehicleTypes(vtId)
 );
 
 CREATE TABLE coupons (
@@ -146,7 +146,7 @@ CREATE TABLE trips (
     FOREIGN KEY (userId) REFERENCES users(userId),
     FOREIGN KEY (pickLocId) REFERENCES locations(locId),
     FOREIGN KEY (dropLocId) REFERENCES locations(locId),
-    FOREIGN KEY (vehId) REFERENCES locations_vehicleClass(vehId),
+    FOREIGN KEY (vehId) REFERENCES locations_vehicleTypes(vehId),
     FOREIGN KEY (coupId) REFERENCES coupons(coupId)
 );
 
