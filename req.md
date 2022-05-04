@@ -6,15 +6,15 @@
         [ ] view all
         [ ] block ?skip
     - locations
-        [ ] create
-        [ ] view all
-        [ ] update
-        [ ] delete
+        [x] create
+        [x] view all
+        [x] update
+        [x] delete
     - vehicleClass 
-        [ ] create
-        [ ] view all
-        [ ] update
-        [ ] delete
+        [x] create
+        [x] view all
+        [x] update
+        [x] delete
     - vehicles
         [ ] create
         [ ] view all
@@ -31,11 +31,11 @@
         * view all
         * delete ?skip
     - coupon
-        * create
-        * view
-        * update
-        * delete
-        * add coupon for user/company
+        [ ] create
+        [ ] view
+        [ ] update
+        [ ] delete
+        [ ] add coupon for user/company
     - company
         * create
         * view all

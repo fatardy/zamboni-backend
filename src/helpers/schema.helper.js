@@ -82,6 +82,24 @@ const location = {
 
 };
 
+const vehicleClass = {
+
+    create: Joi.object().keys({
+        name: trimStringAllowEmpty,
+        rate: numberAllowEmpty,
+        overFee: numberAllowEmpty,
+    }),
+
+    update: Joi.object().keys({
+        vcId: trimStringRequired,
+
+        name: trimStringAllowEmpty,
+        rate: numberAllowEmpty,
+        overFee: numberAllowEmpty,
+    }),
+
+};
+
 // const group = {
 
 //     create: Joi.object().keys({
@@ -150,4 +168,5 @@ module.exports = {
     auth,
     user,
     location,
+    vehicleClass,
 };

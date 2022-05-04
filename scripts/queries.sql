@@ -11,3 +11,20 @@ UPDATE users SET
     firstName = 'Ardy', 
     lastName = 'Almur'
 WHERE userId = 1;
+
+
+-- some interesting shit from class
+
+-- you can do a dynamic update? how interesting!
+UPDATE users SET
+    salary = salary + 10
+    WHERE userId = 1;
+
+-- in oracle, to add to null:
+UPDATE users SET
+    SET comm = nvl(comm, 0) + 100
+    WHERE userId = 1;
+-- if the commission is null, it will convert to 0;
+
+-- if you put CASCADE for delete on a parent, the children will also be deleted;
+
