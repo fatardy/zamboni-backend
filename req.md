@@ -16,10 +16,10 @@
         [x] update
         [x] delete
     - vehicles
-        [ ] create
-        [ ] view all
-        [ ] update
-        [ ] delete
+        [x] create
+        [x] view all
+        [x] update
+        [x] delete
     - bookings
         * view all
         * cancel

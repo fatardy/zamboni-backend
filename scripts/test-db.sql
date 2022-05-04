@@ -102,7 +102,7 @@ CREATE TABLE locations_vehicleTypes (
     vehId VARCHAR(17) NOT NULL, -- vehicle identification
     make VARCHAR(30) NOT NULL,
     model VARCHAR(30) NOT NULL,
-    licencePlate VARCHAR(10) NOT NULL,
+    licensePlate VARCHAR(10) NOT NULL,
     locId INT(10) UNSIGNED NOT NULL,
     vtId INT(10) UNSIGNED NOT NULL,
 

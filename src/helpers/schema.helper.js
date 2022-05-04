@@ -100,6 +100,28 @@ const vehicleType = {
 
 };
 
+const vehicle = {
+
+    create: Joi.object().keys({
+        vehId: trimStringRequired, // pk but no default value
+        make: trimStringAllowEmpty,
+        model: trimStringAllowEmpty,
+        licensePlate: trimStringAllowEmpty,
+        locId: trimStringRequired,
+        vtId: trimStringRequired,
+    }),
+
+    update: Joi.object().keys({
+        vehId: trimStringRequired,
+
+        make: trimStringAllowEmpty,
+        model: trimStringAllowEmpty,
+        licensePlate: trimStringAllowEmpty,
+        locId: trimStringRequired,
+        vtId: trimStringRequired,
+    }),
+
+};
 // const group = {
 
 //     create: Joi.object().keys({
@@ -169,4 +191,5 @@ module.exports = {
     user,
     location,
     vehicleType,
+    vehicle,
 };
