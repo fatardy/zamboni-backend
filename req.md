@@ -1,25 +1,25 @@
 # admin
     - auth
-        * login
+        [ ] login
     - users
-        * mark user as admin
-        * view all
-        * block ?skip
+        [ ] mark user as admin
+        [ ] view all
+        [ ] block ?skip
     - locations
-        * create
-        * view all
-        * update
-        * delete
+        [ ] create
+        [ ] view all
+        [ ] update
+        [ ] delete
     - vehicleClass 
-        * create
-        * view all
-        * update
-        * delete
+        [ ] create
+        [ ] view all
+        [ ] update
+        [ ] delete
     - vehicles
-        * create
-        * view all
-        * update
-        * delete
+        [ ] create
+        [ ] view all
+        [ ] update
+        [ ] delete
     - bookings
         * view all
         * cancel
@@ -43,44 +43,43 @@
 
 # customer apis
     - auth
-        * signup
-        * login
-        * forgot password ?necessary
-        * change password ?necessary
+        [x] authorize
+        [x] send otp
+        [x] verify otp
     - user
-        * edit user
-        * view user data ?dont need user by id
+        [x] view user data
+        [x] get user data
     - home
-        * view vehicles at location on date (public)
+        [ ] view vehicles at location on date (public)
     - booking
-        * create booking
-        * view all bookings of user
-        * cancel booking ?skip
+        [ ] create booking
+        [ ] view all bookings of user
+        [ ] cancel booking ?skip
     - invoice
-        * view all invoices
+        [ ] view all invoices
     - payment
-        * create payment
-        * view all payments
+        [ ] create payment
+        [ ] view all payments
     - coupon
-        * view all coupons
-        * use coupon
+        [ ] view all coupons
+        [ ] use coupon
 
 # frontend
     + admin
         - auth
-            * login
+            [ ] login
         - users
-            * create / edit
-            * view all
+            [ ] create / edit
+            [ ] view all
         - locations
-            * create / edit
-            * view all (delete)
+            [ ] create / edit
+            [ ] view all (delete)
         - vehicleClass
-            * create / edit
-            * view all (delete)
+            [ ] create / edit
+            [ ] view all (delete)
         - vehicles
-            * create / edit
-            * view all (delete)
+            [ ] create / edit
+            [ ] view all (delete)
         - bookings
             * view all (cancel)
         - invoice

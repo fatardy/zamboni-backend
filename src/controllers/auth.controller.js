@@ -200,6 +200,7 @@ const userCtrl = {
     },
 
 };
+
 const adminCtrl = {};
 
 module.exports = {

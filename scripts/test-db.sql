@@ -1,4 +1,4 @@
-DROP DATABASE zamboni;
+DROP DATABASE IF EXISTS zamboni;
 
 CREATE DATABASE zamboni;
 USE zamboni;
@@ -62,13 +62,6 @@ CREATE TABLE bizCustomers (
     FOREIGN KEY (firmId) REFERENCES firms(firmId)
 );
 
-
--- create the default admin;
--- INSERT INTO admins (email, isAdmin) VALUES ('a@cronlogy.com', true);
-
--- ALTER TABLE users ADD CONSTRAINT constCheckUserType
---     CHECK (userType IN ('C', 'I'));
-
 CREATE TABLE otps (
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     otp INT(6) NOT NULL,
@@ -86,6 +79,7 @@ CREATE TABLE vehicleClass (
 
     PRIMARY KEY (vcId)
 );
+
 
 CREATE TABLE locations (
     locId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -127,6 +121,14 @@ CREATE TABLE coupons (
     PRIMARY KEY (coupId)
 );
 
+CREATE TABLE users_coupons (
+    userId INT(10) UNSIGNED NOT NULL,
+    coupId INT(10) UNSIGNED NOT NULL,
+    coupType VARCHAR(30), -- what is this??
+
+    PRIMARY KEY (userId, coupId)
+);
+
 CREATE TABLE trips (
     tripId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     pickDate DATETIME NOT NULL,
@@ -137,8 +139,8 @@ CREATE TABLE trips (
     userId INT(10) UNSIGNED NOT NULL,
     pickLocId INT(10) UNSIGNED NOT NULL,
     dropLocId INT(10) UNSIGNED NOT NULL,
-    vehId INT(10) UNSIGNED NOT NULL,
     coupId INT(10) UNSIGNED NOT NULL,
+    vehId VARCHAR(17) NOT NULL,
 
     PRIMARY KEY (tripId),
     FOREIGN KEY (userId) REFERENCES users(userId),
@@ -148,27 +150,31 @@ CREATE TABLE trips (
     FOREIGN KEY (coupId) REFERENCES coupons(coupId)
 );
 
-CREATE TABLE users_coupons (
-    coupType NOT NULL
-
-    
-);
-
-CREATE TABLE na_invoice (
-    invId INT(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE invoices (
+    invId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     invDate DATETIME NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
+    amount DECIMAL(10, 2),
+    tripId INT(10) UNSIGNED NOT NULL,
 
     PRIMARY KEY (invId),
     FOREIGN KEY (tripId) REFERENCES trips(tripId)
 );
 
+CREATE TABLE payments (
+    payId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    payDate DATETIME NOT NULL,
+    amount DECIMAL(10, 2),
+    method ENUM('VISA', 'MASTERCARD', 'RUPAY', 'OTHER'), -- CHANGE THIS!
+    cardNo DECIMAL(10),
+    invId INT(10) UNSIGNED NOT NULL,
 
+    PRIMARY KEY (payId),
+    FOREIGN KEY (invId) REFERENCES invoices(invId)
+);
 
+-- create the default admin;
+-- INSERT INTO admins (email, isAdmin) VALUES ('a@cronlogy.com', true);
 
--- INSERT INTO users 
--- (first_name, last_name) VALUES
--- ('bob', 'brush');
--- INSERT INTO users 
--- (first_name, last_name) VALUES
--- ('brut', 'classic');
+-- ALTER TABLE users ADD CONSTRAINT constCheckUserType
+--     CHECK (userType IN ('C', 'I'));
+
