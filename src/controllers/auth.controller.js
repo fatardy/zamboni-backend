@@ -201,7 +201,11 @@ const userCtrl = {
 
 };
 
-const adminCtrl = {};
+const adminCtrl = {
+
+    generateAccessToken,
+
+};
 
 module.exports = {
     userCtrl,

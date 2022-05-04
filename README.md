@@ -10,6 +10,12 @@ Aradhya Alamuru <ardy@nyu.edu>
     * flush grant tables:
     ```FLUSH PRIVILAGES;```
 
+### Standard import sql:
+    * See all tables in db
+    ```USE zamboni;```
+    * Show all tables in zamboni;
+    ```SHOW TABLES;```
+
 ### DB CMD line connection:
     * mysql -u ardy -pasdfQWER12# zamboni
     * mysql -u root -pasdfqwer12#

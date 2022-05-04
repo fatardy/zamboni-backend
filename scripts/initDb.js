@@ -4,7 +4,7 @@ const path = require('path');
 // const fileWithPath = path.join(__dirname, 'create-database.sql');
 const fileWithPath = 'test-db.sql';
 // console.log(fileWithPath);
-cp.exec(`mysql -u ardy -pasdfQWER12# zamboni < ${fileWithPath}`, (error, stdout, stderr) => {
+cp.exec(`mysql -u ardy -pasdfQWER12# < ${fileWithPath}`, (error, stdout, stderr) => {
     if (error) {
         console.log('error ', error);
     }

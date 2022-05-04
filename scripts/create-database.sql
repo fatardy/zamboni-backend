@@ -1,4 +1,4 @@
-DROP DATABASE zamboni;
+DROP DATABASE IF EXISTS zamboni;
 
 CREATE DATABASE zamboni;
 USE zamboni;

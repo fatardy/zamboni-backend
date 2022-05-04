@@ -52,6 +52,36 @@ const user = {
 
 };
 
+const location = {
+
+    create: Joi.object().keys({
+        name: trimStringAllowEmpty,
+        phoneNumber: numberAllowEmpty,
+        email: trimStringAllowEmpty,
+        street1: trimStringAllowEmpty,
+        street2: trimStringAllowEmpty,
+        city: trimStringAllowEmpty,
+        stateName: trimStringAllowEmpty,
+        zipCode: trimStringAllowEmpty,
+        country: trimStringAllowEmpty,
+    }),
+
+    update: Joi.object().keys({
+        locId: trimStringRequired,
+
+        name: trimStringAllowEmpty,
+        phoneNumber: numberAllowEmpty,
+        email: trimStringAllowEmpty,
+        street1: trimStringAllowEmpty,
+        street2: trimStringAllowEmpty,
+        city: trimStringAllowEmpty,
+        stateName: trimStringAllowEmpty,
+        zipCode: trimStringAllowEmpty,
+        country: trimStringAllowEmpty,
+    }),
+
+};
+
 // const group = {
 
 //     create: Joi.object().keys({
@@ -119,4 +149,5 @@ const user = {
 module.exports = {
     auth,
     user,
+    location,
 };
