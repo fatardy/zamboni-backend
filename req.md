@@ -31,10 +31,10 @@
         * view all
         * delete ?skip
     - coupon
-        [ ] create
-        [ ] view
-        [ ] update
-        [ ] delete
+        [x] create
+        [x] view
+        [x] update
+        [x] delete
         [ ] add coupon for user/company
     - company
         * create

@@ -122,6 +122,27 @@ const vehicle = {
     }),
 
 };
+
+const coupon = {
+
+    create: Joi.object().keys({
+        name: trimStringAllowEmpty,
+        percent: numberAllowEmpty,
+        startDate: trimStringRequired,
+        endDate: trimStringRequired,
+    }),
+
+    update: Joi.object().keys({
+        coupId: trimStringRequired,
+
+        name: trimStringAllowEmpty,
+        percent: numberAllowEmpty,
+        startDate: trimStringRequired,
+        endDate: trimStringRequired,
+    }),
+
+};
+
 // const group = {
 
 //     create: Joi.object().keys({
@@ -192,4 +213,5 @@ module.exports = {
     location,
     vehicleType,
     vehicle,
+    coupon,
 };
