@@ -20,26 +20,27 @@
         [x] view all
         [x] update
         [x] delete
-    - bookings
-        * view all
-        * cancel
+    - trips
+        [ ] view all
+        [ ] cancel
     - invoice
-        * create (trigger)
-        * view all
-        * delete ?skip
+        [ ] create (trigger)
+        [ ] view all
+        [ ] delete ?skip
     - payment
-        * view all
-        * delete ?skip
+        [ ] view all
+        [ ] delete ?skip
     - coupon
         [x] create
         [x] view
         [x] update
         [x] delete
         [ ] add coupon for user/company
-    - company
-        * create
-        * view all
-        * delete
+    - firms
+        [x] create
+        [x] view all
+        [x] update !done, but not required
+        [x] delete
 
 # customer apis
     - auth

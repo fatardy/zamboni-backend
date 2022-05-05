@@ -143,69 +143,21 @@ const coupon = {
 
 };
 
-// const group = {
+const firm = {
 
-//     create: Joi.object().keys({
-//         name: trimStringRequired,
-//         description: trimStringAllowEmpty,
-//         avatar: trimStringAllowEmpty,
-//         username: trimStringRequired,
-//         password: trimStringRequired,
-//         members: arrayOfStringsAllowEmpty,
-//     }),
+    create: Joi.object().keys({
+        name: trimStringAllowEmpty,
+        regNo: trimStringRequired,
+    }),
 
-//     edit: Joi.object().keys({
-//         groupId: trimStringRequired,
+    update: Joi.object().keys({
+        firmId: trimStringRequired,
 
-//         name: trimStringAllowEmpty,
-//         description: trimStringAllowEmpty,
-//         avatar: trimStringAllowEmpty,
-//         username: trimStringAllowEmpty,
-//         password: trimStringAllowEmpty,
-//         members: arrayOfStringsAllowEmpty,
-//     }),
+        name: trimStringAllowEmpty,
+        regNo: trimStringRequired,
+    }),
 
-//     join: Joi.object().keys({
-//         username: trimStringRequired,
-//         password: trimStringRequired,
-//     }),
-
-// };
-
-// const habit = {
-
-//     create: Joi.object().keys({
-//         groupId: trimStringRequired,
-//         name: trimStringRequired,
-//         categories: arrayOfStringsAllowEmpty,
-//         // days: Joi.array().items(trimString.valid(...DAYS)),
-//         days: Joi.array().items(numberAllowEmpty),
-//         startTime: numberRequired,
-//         endTime: numberAllowEmpty,
-//         members: arrayOfStringsAllowEmpty,
-//         points: numberAllowEmpty,
-//     // notify
-//     }),
-
-//     edit: Joi.object().keys({
-//         habitId: trimStringRequired,
-//         name: trimStringAllowEmpty,
-//         categories: arrayOfStringsAllowEmpty,
-//         // days: Joi.array().items(trimString.valid(...DAYS)),
-//         days: Joi.array().items(numberAllowEmpty),
-//         startTime: numberAllowEmpty,
-//         endTime: numberAllowEmpty,
-//         members: arrayOfStringsAllowEmpty,
-//         points: numberAllowEmpty,
-//     }),
-
-// };
-
-// const task = {
-//     markDone: Joi.object().keys({
-//         habitId: trimStringRequired,
-//     }),
-// };
+};
 
 module.exports = {
     auth,
@@ -214,4 +166,5 @@ module.exports = {
     vehicleType,
     vehicle,
     coupon,
+    firm,
 };
