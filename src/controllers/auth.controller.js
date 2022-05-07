@@ -199,6 +199,26 @@ const userCtrl = {
         }
     },
 
+    verifyAdminAccess: async (req, res, next) => {
+        const { userId } = res.locals.user;
+
+        try {
+            const [data] = await db.query(
+                `SELECT * FROM admins WHERE userId = ${userId}`,
+            );
+            // console.log(data);
+
+            if (data.length === 0) {
+                return responseHelper.badRequestResponse(res, 'Not Admin, cannot a see..');
+            }
+
+            return next();
+        } catch (err) {
+            logger.error(`auth verifyAdminAccess > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
+
 };
 
 const adminCtrl = {

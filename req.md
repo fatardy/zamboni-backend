@@ -1,6 +1,6 @@
 # admin
     - auth
-        [ ] login
+        [x] login
     - users
         [ ] mark user as admin
         [ ] view all

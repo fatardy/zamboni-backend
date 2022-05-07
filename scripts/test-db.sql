@@ -141,6 +141,7 @@ CREATE TABLE trips (
     dropLocId INT(10) UNSIGNED NOT NULL,
     coupId INT(10) UNSIGNED NOT NULL,
     vehId VARCHAR(17) NOT NULL,
+    inProgress BOOLEAN,
 
     PRIMARY KEY (tripId),
     FOREIGN KEY (userId) REFERENCES users(userId),
@@ -178,3 +179,5 @@ CREATE TABLE payments (
 -- ALTER TABLE users ADD CONSTRAINT constCheckUserType
 --     CHECK (userType IN ('C', 'I'));
 
+INSERT INTO users (userType, email, firstName, lastName) VALUES ('A', 'admin@zamboni.com', 'ADMIN', 'ARDY');
+INSERT INTO admins (userId, isAdmin) VALUES (1, true);
