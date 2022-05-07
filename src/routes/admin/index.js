@@ -9,6 +9,8 @@ const vehicleType = require('./vehicleType.routes');
 const vehicle = require('./vehicle.routes');
 const coupon = require('./coupon.routes');
 const firm = require('./firm.routes');
+const invoice = require('./invoice.routes');
+const payment = require('./payment.routes');
 const { protectRoutes } = require('../../controllers/auth.controller');
 
 api.use('/auth', auth);
@@ -21,5 +23,7 @@ api.use('/vehicleType', vehicleType);
 api.use('/vehicle', vehicle);
 api.use('/coupon', coupon);
 api.use('/firm', firm);
+api.use('/invoice', invoice);
+api.use('/payment', payment);
 
 module.exports = api;

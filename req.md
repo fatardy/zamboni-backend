@@ -25,11 +25,11 @@
         [ ] cancel
     - invoice
         [ ] create (trigger)
-        [ ] view all
-        [ ] delete ?skip
+        [x] view all
+        [-] delete ?skip
     - payment
-        [ ] view all
-        [ ] delete ?skip
+        [x] view all
+        [-] delete ?skip
     - coupon
         [x] create
         [x] view
@@ -51,6 +51,7 @@
         [x] view user data
         [x] get user data
     - home
+        [ ] view all locations
         [ ] view vehicles at location on date (public)
     - booking
         [ ] create booking
