@@ -33,39 +33,54 @@ async function generateAccessToken(req, res) {
     });
 }
 
-async function protectRoutes(req, res, next) {
-    const token = req.headers.access_token;
-    if (!token) {
-        return responseHelper.unAuthorizedResponse(res, 'Where is token, chinnaw?');
-    }
-
-    let decoded;
-    try {
-        decoded = jwtHelper.verifyAccessToken(token);
-    } catch (err) {
-        logger.error(`ERR auth protect verify > ${err}`);
-        return responseHelper.unAuthorizedResponse(res, `Token verification failed - ${err}`);
-    }
-
-    try {
-        const [[userData]] = await db.query(
-            `SELECT * FROM users
-            WHERE userId = ${decoded.userId}
-            LIMIT 1;`,
-        );
-        // if userData is empty, it will be undefined;
-        if (userData == null) {
-            return responseHelper.unAuthorizedResponse(res, 'Invalid user. User is null, chinnaw?');
+function protectRoutes({ checkAdmin = false }) {
+    return async function cb(req, res, next) {
+        const token = req.headers.access_token;
+        if (!token) {
+            return responseHelper.unAuthorizedResponse(res, 'Where is token, chinnaw?');
         }
 
-        res.locals.decoded = decoded;
-        res.locals.user = userData;
+        let decoded;
+        try {
+            decoded = jwtHelper.verifyAccessToken(token);
+        } catch (err) {
+            logger.error(`ERR auth protect verify > ${err}`);
+            return responseHelper.unAuthorizedResponse(res, `Token verification failed - ${err}`);
+        }
 
-        return next();
-    } catch (err) {
-        logger.error(`ERR auth protect find > ${err}`);
-        return responseHelper.serverErrorResponse(res, err);
-    }
+        try {
+            const [[userData]] = await db.query(
+                `SELECT * FROM users
+                WHERE userId = ${decoded.userId}
+                LIMIT 1;`,
+            );
+            // if userData is empty, it will be undefined;
+            if (userData == null) {
+                return responseHelper.unAuthorizedResponse(res, 'Invalid user. User is null, chinnaw?');
+            }
+
+            if (checkAdmin) {
+                const [adminData] = await db.query(
+                    `SELECT * FROM admins WHERE userId = ${decoded.userId}`,
+                );
+
+                console.log('adminData', adminData);
+
+                const { isAdmin } = adminData[0];
+                if (!isAdmin) {
+                    return responseHelper.unAuthorizedResponse(res, 'Not admin, want to see :O');
+                }
+            }
+
+            res.locals.decoded = decoded;
+            res.locals.user = userData;
+
+            return next();
+        } catch (err) {
+            logger.error(`ERR auth protect find > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    };
 }
 
 async function updateOtpForUser(email, userId) {

@@ -13,7 +13,7 @@ const { protectRoutes } = require('../../controllers/auth.controller');
 
 api.use('/auth', auth);
 
-api.use(protectRoutes);
+api.use(protectRoutes({ checkAdmin: false }));
 
 api.use('/user', user);
 api.use('/location', location);

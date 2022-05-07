@@ -44,7 +44,7 @@ const adminCtrl = {
             return responseHelper.joiErrorResponse(res, error);
         }
         const {
-            vcId,
+            vtId,
             name,
             rate,
             overFee,
@@ -55,7 +55,7 @@ const adminCtrl = {
                 name = '${name || ''}', 
                 rate = ${rate || 0}, 
                 overFee = ${overFee || 0}
-                WHERE vcId = ${vcId};`;
+                WHERE vtId = ${vtId};`;
 
             console.log(q);
             const [data] = await db.query(q);
@@ -84,10 +84,10 @@ const adminCtrl = {
     },
 
     delete: async (req, res) => {
-        const { vcId } = req.params;
+        const { vtId } = req.params;
         try {
             const [data] = await db.query(
-                `DELETE FROM vehicleTypes WHERE vcId = ${vcId};`,
+                `DELETE FROM vehicleTypes WHERE vtId = ${vtId};`,
             );
             return responseHelper.successResponse(res, data);
         } catch (err) {

@@ -91,7 +91,7 @@ const vehicleType = {
     }),
 
     update: Joi.object().keys({
-        vcId: trimStringRequired,
+        vtId: trimStringRequired,
 
         name: trimStringAllowEmpty,
         rate: numberAllowEmpty,
