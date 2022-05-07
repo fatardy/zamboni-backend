@@ -159,6 +159,22 @@ const firm = {
 
 };
 
+const trip = {
+
+    create: Joi.object().keys({
+        pickDate: trimStringRequired,
+        dropDate: trimStringRequired,
+        odoStart: numberRequired,
+        odoLimit: numberRequired,
+        userId: trimStringRequired,
+        pickLocId: trimStringRequired,
+        dropLocId: trimStringRequired,
+        coupId: trimStringAllowEmpty,
+        vehId: trimStringRequired,
+    }),
+
+};
+
 module.exports = {
     auth,
     user,
@@ -167,4 +183,5 @@ module.exports = {
     vehicle,
     coupon,
     firm,
+    trip,
 };

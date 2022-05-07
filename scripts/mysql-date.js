@@ -18,5 +18,5 @@ function addDays(days, date = new Date()) {
 
 const d = getStandardFormattedDateTime();
 console.log(d);
-const twoDaysLater = addDays(2);
+const twoDaysLater = addDays(10);
 console.log(getStandardFormattedDateTime(twoDaysLater));

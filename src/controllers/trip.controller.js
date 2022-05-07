@@ -1,6 +1,6 @@
 const { loggers } = require('winston');
 const { db } = require('../config/initializers/database');
-const schemaHelper = require('../helpers/schema.helper').location;
+const schemaHelper = require('../helpers/schema.helper').trip;
 const responseHelper = require('../helpers/response.helper');
 
 const logger = loggers.get('logger');
@@ -21,7 +21,57 @@ const getAll = async (req, res) => {
 
 const userCtrl = {
 
-    getAll,
+    create: async (req, res) => {
+        try {
+            const { error, value } = schemaHelper.create.validate(req.body);
+            if (error) {
+                return responseHelper.joiErrorResponse(res, error);
+            }
+            const {
+                pickDate,
+                dropDate,
+                odoStart,
+                odoLimit,
+                userId,
+                pickLocId,
+                dropLocId,
+                coupId,
+                vehId,
+            } = value;
+
+            const q = `INSERT INTO trips (
+                pickDate,
+                dropDate,
+                odoStart,
+                odoLimit,
+                userId,
+                pickLocId,
+                dropLocId,
+                coupId,
+                vehId,
+                inProgress
+            ) VALUES (
+                '${pickDate}',
+                '${dropDate}',
+                ${odoStart},
+                ${odoLimit},
+                '${userId}',
+                '${pickLocId}',
+                '${dropLocId}',
+                ${coupId ? `'${coupId}'` : null},
+                '${vehId}',
+                ${true}
+            );`;
+
+            console.log(q);
+            const [data] = await db.query(q);
+
+            return responseHelper.successResponse(res, data);
+        } catch (err) {
+            logger.error(`location getAll > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
 
 };
 

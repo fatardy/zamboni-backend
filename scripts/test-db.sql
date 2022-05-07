@@ -134,12 +134,12 @@ CREATE TABLE trips (
     pickDate DATETIME NOT NULL,
     dropDate DATETIME NOT NULL,
     odoStart DECIMAL(10, 2) NOT NULL,
-    odoEnd DECIMAL(10, 2) NOT NULL,
+    odoEnd DECIMAL(10, 2),
     odoLimit DECIMAL(10, 2) NOT NULL,
     userId INT(10) UNSIGNED NOT NULL,
     pickLocId INT(10) UNSIGNED NOT NULL,
     dropLocId INT(10) UNSIGNED NOT NULL,
-    coupId INT(10) UNSIGNED NOT NULL,
+    coupId INT(10) UNSIGNED,
     vehId VARCHAR(17) NOT NULL,
     inProgress BOOLEAN,
 
@@ -224,3 +224,27 @@ VALUES (
     "1",
     "1"
 );
+
+INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId)
+VALUES (
+    "asdfqwerasdfasdf",
+    "BMW",
+    "5 Series",
+    "ZSDF1234QW",
+    "1",
+    "1"
+);
+
+
+tripId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    pickDate DATETIME NOT NULL,
+    dropDate DATETIME NOT NULL,
+    odoStart DECIMAL(10, 2) NOT NULL,
+    odoEnd DECIMAL(10, 2) NOT NULL,
+    odoLimit DECIMAL(10, 2) NOT NULL,
+    userId INT(10) UNSIGNED NOT NULL,
+    pickLocId INT(10) UNSIGNED NOT NULL,
+    dropLocId INT(10) UNSIGNED NOT NULL,
+    coupId INT(10) UNSIGNED NOT NULL,
+    vehId VARCHAR(17) NOT NULL,
+    inProgress BOOLEAN,

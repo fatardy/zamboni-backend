@@ -28,3 +28,23 @@ UPDATE users SET
 
 -- if you put CASCADE for delete on a parent, the children will also be deleted;
 
+
+
+select b.locId as 'locId', b.name as 'Location', 
+    c.vtId as 'vtId', c.name as 'Vehicle Class', c.rate, c.overFee, 
+    a.vehId as 'vehId', a.make, a.model, a.licensePlate
+from locations_vehicleTypes as a
+join locations as b
+    on a.locId = b.locId
+join vehicleTypes as c
+    on a.vtId = c.vtId
+where a.vehId not in (
+    select vehId
+    from trips a
+    where a.inProgress = true    
+);
+
+select *
+from trips a
+where a.inProgress = true;
+
