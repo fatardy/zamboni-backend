@@ -181,3 +181,46 @@ CREATE TABLE payments (
 
 INSERT INTO users (userType, email, firstName, lastName) VALUES ('A', 'admin@zamboni.com', 'ADMIN', 'ARDY');
 INSERT INTO admins (userId, isAdmin) VALUES (1, true);
+
+INSERT INTO locations (name, phoneNumber, email, street1, city, stateName, zipCode, country)
+VALUES (
+    "Fulton St2",
+    1231231234,
+    "fulton@sex.com",
+    "asdf",
+    "Hyd",
+    "Mehdipatnam",
+    "123112",
+    "USA"
+);
+
+INSERT INTO coupons (name, percent, startDate, endDate)
+VALUES (
+    "30% Off",
+    10,
+    "2022-05-04 19-57-10",
+    "2022-05-06 19-57-10"
+);
+
+INSERT INTO firms (name, regNo)
+VALUES (
+    "Intel Corp",
+    "asdf1234as"
+);
+
+INSERT INTO vehicleTypes (name, rate, overFee)
+VALUES (
+    "SUV",
+    30.5,
+    4
+);
+
+INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId)
+VALUES (
+    "asdfqwerasdfqwert",
+    "BMW",
+    "3 Series",
+    "ASDF1234QW",
+    "1",
+    "1"
+);
