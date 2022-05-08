@@ -1,6 +1,6 @@
 // import { format } from 'date-fns';
 
-const { format } = require('date-fns');
+const { format, differenceInMinutes, parseISO } = require('date-fns');
 
 /**
  * Gives you a mysql standard formatted datetime
@@ -16,7 +16,11 @@ function addDays(days, date = new Date()) {
     return result;
 }
 
-const d = getStandardFormattedDateTime();
-console.log(d);
+const now = getStandardFormattedDateTime();
+console.log(now);
 const twoDaysLater = addDays(10);
-console.log(getStandardFormattedDateTime(twoDaysLater));
+const later = getStandardFormattedDateTime(twoDaysLater);
+console.log(later);
+
+// const diff = differenceInMinutes(parseISO(later), parseISO(now));
+// console.log(diff / 60 / 24);

@@ -48,3 +48,17 @@ select *
 from trips a
 where a.inProgress = true;
 
+
+select a.tripId, a.pickDate, a.dropDate, a.odoStart, a.odoEnd, a.inProgress,
+    b.invId, b.invDate, b.amount,
+    c.locId as "pickLocId", c.name as "pickLocName",
+    d.locId as "dropLocId", d.name as "dropLocName"
+from trips as a
+left join invoices as b
+    on a.tripId = b.tripId
+join locations as c
+    on a.pickLocId = c.locId
+join locations as d
+    on a.pickLocId = d.locId
+where a.userId = 2
+order by a.inProgress desc;

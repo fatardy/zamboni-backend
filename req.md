@@ -51,12 +51,14 @@
         [x] view user data
         [x] get user data
     - home
-        [ ] view all locations
-        [ ] view vehicles at location on date (public)
-    - booking
-        [ ] create booking
-        [ ] view all bookings of user
-        [ ] cancel booking ?skip
+        [x] view all locations (public)
+        [x] view available vehicles at location on date (public)
+        [ ] view all vehicles mark unavailable ones also
+    - trip
+        [x] create 
+        [x] view all trips of user
+        [-] cancel trip ?skip
+        [x] end trip
     - invoice
         [ ] view all invoices
     - payment

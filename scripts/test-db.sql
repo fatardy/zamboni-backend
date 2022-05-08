@@ -133,6 +133,7 @@ CREATE TABLE trips (
     tripId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     pickDate DATETIME NOT NULL,
     dropDate DATETIME NOT NULL,
+    finalDropDate DATETIME,
     odoStart DECIMAL(10, 2) NOT NULL,
     odoEnd DECIMAL(10, 2),
     odoLimit DECIMAL(10, 2) NOT NULL,

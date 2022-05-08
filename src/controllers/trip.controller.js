@@ -1,5 +1,6 @@
 const { loggers } = require('winston');
 const { db } = require('../config/initializers/database');
+const { getMysqlDate, dateDiffInMins } = require('../helpers/date.helper');
 const schemaHelper = require('../helpers/schema.helper').trip;
 const responseHelper = require('../helpers/response.helper');
 
@@ -65,6 +66,111 @@ const userCtrl = {
 
             console.log(q);
             const [data] = await db.query(q);
+
+            return responseHelper.successResponse(res, data);
+        } catch (err) {
+            logger.error(`location getAll > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
+
+    // ONLY TAKES inProgress = 1; 0 returns all the trips!
+    getAllOfUser: async (req, res) => {
+        const { inProgress } = req.query;
+        const { userId } = res.locals.user;
+
+        // let q = `
+        //     SELECT *
+        //     FROM trips as a
+        //     left join invoices as b
+        //         on a.tripId = b.tripId
+        //     WHERE userId = ${userId};`;
+
+        // // pointedly using a == over ===
+        // // eslint-disable-next-line eqeqeq
+        // if (inProgress == 1) {
+        //     q = `
+        //         select *
+        //         from trips as a
+        //         left join invoices as b
+        //             on a.tripId = b.tripId
+        //         where a.userId = ${userId} and inProgress = ${inProgress};
+        //     `;
+        // }
+        const q = `
+        select a.tripId, a.pickDate, a.dropDate, a.odoStart, a.odoEnd, a.inProgress,
+            b.invId, b.invDate, b.amount,
+            c.locId as "pickLocId", c.name as "pickLocName",
+            d.locId as "dropLocId", d.name as "dropLocName"
+        from trips as a
+        left join invoices as b
+            on a.tripId = b.tripId
+        join locations as c
+            on a.pickLocId = c.locId
+        join locations as d
+            on a.pickLocId = d.locId
+        where a.userId = 2
+        order by a.inProgress desc;
+        `;
+
+        try {
+            const [data] = await db.query(q);
+            // console.log(data);
+
+            return responseHelper.successResponse(res, data == null ? [] : data);
+        } catch (err) {
+            logger.error(`location getAll > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
+
+    endTrip: async (req, res) => {
+        const { error, value } = schemaHelper.endTrip.validate(req.body);
+        if (error) {
+            return responseHelper.joiErrorResponse(res, error);
+        }
+        const {
+            tripId,
+            odoEnd,
+            finalDropDate,
+        } = value;
+
+        try {
+            await db.query(
+                `UPDATE trips SET
+                    inProgress = 0,
+                    odoEnd = ${odoEnd},
+                    finalDropDate = '${finalDropDate}'
+                    WHERE tripId = ${tripId}`,
+            );
+            const [data] = await db.query(`SELECT * FROM trips WHERE tripId = ${tripId}`);
+            console.log(data);
+
+            const totalAmount = 0;
+            // put the start date in first param;
+            const diff = dateDiffInMins(new Date(), finalDropDate);
+            if (diff < 0) {
+                // user has crossed the booking;
+            } else {
+                // charge full amount
+            }
+
+            // add coupon discount;
+
+            // check odoMeter readings, add the extras;
+
+            const [invoice] = await db.query(
+                `INSERT INTO invoices (
+                    invDate,
+                    amount,
+                    tripId
+                    ${totalAmount},
+                ) VALUES (
+                    ${getMysqlDate()},
+                    '${tripId}'
+                );`,
+            );
+            console.log('invoice', invoice);
 
             return responseHelper.successResponse(res, data);
         } catch (err) {

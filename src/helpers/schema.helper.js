@@ -173,6 +173,13 @@ const trip = {
         vehId: trimStringRequired,
     }),
 
+    endTrip: Joi.object().keys({
+        tripId: trimStringRequired,
+
+        odoEnd: numberRequired,
+        finalDropDate: trimStringRequired,
+    }),
+
 };
 
 module.exports = {
