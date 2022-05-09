@@ -114,7 +114,8 @@ CREATE TABLE locations_vehicleTypes (
 CREATE TABLE coupons (
     coupId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(60) NOT NULL,
-    percent DECIMAL(4, 2) NOT NULL,
+    percent DECIMAL(5, 2) NOT NULL,
+    flatRate DECIMAL(5, 2) NOT NULL,
     startDate DATETIME NOT NULL,
     endDate DATETIME NOT NULL,
 

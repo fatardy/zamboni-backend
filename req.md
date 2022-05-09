@@ -60,7 +60,7 @@
         [-] cancel trip ?skip
         [x] end trip
     - invoice
-        [ ] view all invoices
+        [-] view all invoices ?detail on trip 
     - payment
         [ ] create payment
         [ ] view all payments

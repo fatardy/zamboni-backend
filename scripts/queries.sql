@@ -62,3 +62,14 @@ join locations as d
     on a.pickLocId = d.locId
 where a.userId = 2
 order by a.inProgress desc;
+
+
+select *
+from trips a
+join locations_vehicleTypes b
+    on a.vehId = b.vehId
+join vehicleTypes c
+    on b.vtId = c.vtId
+left join coupons d
+    on a.coupId = d.coupId
+where a.tripId = 5;

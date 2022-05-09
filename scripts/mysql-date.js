@@ -22,5 +22,5 @@ const twoDaysLater = addDays(10);
 const later = getStandardFormattedDateTime(twoDaysLater);
 console.log(later);
 
-// const diff = differenceInMinutes(parseISO(later), parseISO(now));
-// console.log(diff / 60 / 24);
+const diff = differenceInMinutes(parseISO('2022-05-17T22:01:32.000Z'), parseISO('2022-05-08T02:02:07.000Z'));
+console.log(diff / 60 / 24);

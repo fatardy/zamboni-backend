@@ -1,3 +1,4 @@
+const { differenceInDays, differenceInHours } = require('date-fns');
 const { loggers } = require('winston');
 const { db } = require('../config/initializers/database');
 const { getMysqlDate, dateDiffInMins } = require('../helpers/date.helper');
@@ -74,49 +75,28 @@ const userCtrl = {
         }
     },
 
-    // ONLY TAKES inProgress = 1; 0 returns all the trips!
     getAllOfUser: async (req, res) => {
-        const { inProgress } = req.query;
         const { userId } = res.locals.user;
 
-        // let q = `
-        //     SELECT *
-        //     FROM trips as a
-        //     left join invoices as b
-        //         on a.tripId = b.tripId
-        //     WHERE userId = ${userId};`;
-
-        // // pointedly using a == over ===
-        // // eslint-disable-next-line eqeqeq
-        // if (inProgress == 1) {
-        //     q = `
-        //         select *
-        //         from trips as a
-        //         left join invoices as b
-        //             on a.tripId = b.tripId
-        //         where a.userId = ${userId} and inProgress = ${inProgress};
-        //     `;
-        // }
         const q = `
-        select a.tripId, a.pickDate, a.dropDate, a.odoStart, a.odoEnd, a.inProgress,
-            b.invId, b.invDate, b.amount,
-            c.locId as "pickLocId", c.name as "pickLocName",
-            d.locId as "dropLocId", d.name as "dropLocName"
-        from trips as a
-        left join invoices as b
-            on a.tripId = b.tripId
-        join locations as c
-            on a.pickLocId = c.locId
-        join locations as d
-            on a.pickLocId = d.locId
-        where a.userId = 2
-        order by a.inProgress desc;
+            select a.tripId, a.pickDate, a.dropDate, a.odoStart, a.odoEnd, a.inProgress,
+                b.invId, b.invDate, b.amount,
+                c.locId as "pickLocId", c.name as "pickLocName",
+                d.locId as "dropLocId", d.name as "dropLocName"
+            from trips as a
+            left join invoices as b
+                on a.tripId = b.tripId
+            join locations as c
+                on a.pickLocId = c.locId
+            join locations as d
+                on a.pickLocId = d.locId
+            where a.userId = ${userId}
+            order by a.inProgress desc;
         `;
 
         try {
             const [data] = await db.query(q);
             // console.log(data);
-
             return responseHelper.successResponse(res, data == null ? [] : data);
         } catch (err) {
             logger.error(`location getAll > ${err}`);
@@ -143,38 +123,67 @@ const userCtrl = {
                     finalDropDate = '${finalDropDate}'
                     WHERE tripId = ${tripId}`,
             );
-            const [data] = await db.query(`SELECT * FROM trips WHERE tripId = ${tripId}`);
-            console.log(data);
+            const [data] = await db.query(`
+                select *
+                from trips a
+                join locations_vehicleTypes b
+                    on a.vehId = b.vehId
+                join vehicleTypes c
+                    on b.vtId = c.vtId
+                left join coupons d
+                    on a.coupId = d.coupId
+                where a.tripId = ${tripId};
+            `);
+            // MULTIPLE `name`s in that return obj;
+            const tripData = data[0];
+            // console.log(tripData);
 
-            const totalAmount = 0;
-            // put the start date in first param;
-            const diff = dateDiffInMins(new Date(), finalDropDate);
-            if (diff < 0) {
-                // user has crossed the booking;
-            } else {
-                // charge full amount
+            let totalAmount = 0;
+
+            // TODO: fine for extra days
+
+            const numberOfDays = parseInt(differenceInHours(
+                tripData.finalDropDate,
+                tripData.pickDate,
+            ), 10) / 24;
+            totalAmount = parseInt(numberOfDays, 10) * parseInt(tripData.rate, 10);
+
+            const discountPercent = parseInt(tripData.percent, 10);
+            if (!Number.isNaN(discountPercent)) {
+                // apply the coupon
+                totalAmount -= (totalAmount * discountPercent);
+            }
+            const discountFlatRate = parseInt(tripData.flatRate, 10);
+            if (!Number.isNaN(discountPercent)) {
+                // apply the coupon
+                totalAmount -= discountFlatRate;
             }
 
-            // add coupon discount;
-
             // check odoMeter readings, add the extras;
+            const odoDiff = parseInt(tripData.odoEnd, 10) - parseInt(tripData.odoStart, 10);
+            const odoLimit = parseInt(tripData.odoLimit, 10);
+            if (odoDiff > odoLimit) {
+                // charge for the extra miles;
+                const odoExtraAmount = (odoDiff - odoLimit) * parseInt(tripData.overFee, 10);
+                totalAmount += odoExtraAmount;
+            }
 
             const [invoice] = await db.query(
                 `INSERT INTO invoices (
                     invDate,
                     amount,
                     tripId
-                    ${totalAmount},
                 ) VALUES (
-                    ${getMysqlDate()},
+                    '${getMysqlDate()}',
+                    ${totalAmount},
                     '${tripId}'
                 );`,
             );
-            console.log('invoice', invoice);
+            // console.log('invoice', invoice);
 
-            return responseHelper.successResponse(res, data);
+            return responseHelper.successResponse(res, invoice);
         } catch (err) {
-            logger.error(`location getAll > ${err}`);
+            logger.error(`trip endTrip > ${err}`);
             return responseHelper.serverErrorResponse(res, err);
         }
     },

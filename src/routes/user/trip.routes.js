@@ -4,7 +4,7 @@ const api = express();
 
 const ctrl = require('../../controllers/trip.controller').userCtrl;
 
-api.get('/', ctrl.getAllOfUser); // ?inProgress=1 returns live, 0 returns all;
+api.get('/', ctrl.getAllOfUser);
 api.post('/end', ctrl.endTrip);
 api.post('/', ctrl.create);
 
