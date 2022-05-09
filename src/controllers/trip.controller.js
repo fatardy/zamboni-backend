@@ -82,7 +82,8 @@ const userCtrl = {
             select a.tripId, a.pickDate, a.dropDate, a.odoStart, a.odoEnd, a.inProgress,
                 b.invId, b.invDate, b.amount,
                 c.locId as "pickLocId", c.name as "pickLocName",
-                d.locId as "dropLocId", d.name as "dropLocName"
+                d.locId as "dropLocId", d.name as "dropLocName",
+                e.payId, e.payDate, e.amount, e.method, e.cardNo
             from trips as a
             left join invoices as b
                 on a.tripId = b.tripId
@@ -90,8 +91,10 @@ const userCtrl = {
                 on a.pickLocId = c.locId
             join locations as d
                 on a.pickLocId = d.locId
+            left join payments as e
+                on b.invId = e.invId
             where a.userId = ${userId}
-            order by a.inProgress desc;
+            order by a.inProgress desc;    
         `;
 
         try {

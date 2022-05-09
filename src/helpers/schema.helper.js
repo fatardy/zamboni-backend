@@ -182,6 +182,18 @@ const trip = {
 
 };
 
+const payment = {
+
+    create: Joi.object().keys({
+        payDate: trimStringRequired,
+        amount: numberRequired,
+        method: trimStringRequired,
+        cardNo: numberRequired,
+        invId: trimStringRequired,
+    }),
+
+};
+
 module.exports = {
     auth,
     user,
@@ -191,4 +203,5 @@ module.exports = {
     coupon,
     firm,
     trip,
+    payment,
 };

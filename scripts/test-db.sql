@@ -168,7 +168,7 @@ CREATE TABLE payments (
     payDate DATETIME NOT NULL,
     amount DECIMAL(10, 2),
     method ENUM('VISA', 'MASTERCARD', 'RUPAY', 'OTHER'), -- CHANGE THIS!
-    cardNo DECIMAL(10),
+    cardNo VARCHAR(16),
     invId INT(10) UNSIGNED NOT NULL,
 
     PRIMARY KEY (payId),

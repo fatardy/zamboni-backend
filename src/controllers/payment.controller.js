@@ -1,11 +1,48 @@
 const { loggers } = require('winston');
 const { db } = require('../config/initializers/database');
-const schemaHelper = require('../helpers/schema.helper').location;
+const schemaHelper = require('../helpers/schema.helper').payment;
 const responseHelper = require('../helpers/response.helper');
 
 const logger = loggers.get('logger');
 
 const userCtrl = {
+
+    create: async (req, res) => {
+        const { error, value } = schemaHelper.create.validate(req.body);
+        if (error) {
+            return responseHelper.joiErrorResponse(res, error);
+        }
+        const {
+            payDate,
+            amount,
+            method,
+            cardNo,
+            invId,
+        } = value;
+
+        try {
+            const q = `INSERT INTO payments (
+                payDate,
+                amount,
+                method,
+                cardNo,
+                invId
+            ) VALUES (
+                '${payDate}',
+                ${amount},
+                '${method}',
+                ${cardNo},
+                '${invId}'
+            );`;
+            console.log(q);
+            const [data] = await db.query(q);
+
+            return responseHelper.successResponse(res, data);
+        } catch (err) {
+            logger.error(`payment create > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
 
 };
 

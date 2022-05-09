@@ -62,8 +62,8 @@
     - invoice
         [-] view all invoices ?detail on trip 
     - payment
-        [ ] create payment
-        [ ] view all payments
+        [x] create payment
+        [-] view all payments ?detail on trip
     - coupon
         [ ] view all coupons
         [ ] use coupon
