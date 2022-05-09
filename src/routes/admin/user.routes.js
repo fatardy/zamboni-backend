@@ -2,9 +2,9 @@ const express = require('express');
 
 const api = express();
 
-// const { userCtrl } = require('../../controllers/user.controller');
+const ctrl = require('../../controllers/user.controller').adminCtrl;
 
-// api.get('/', userCtrl.getUserData);
-// api.put('/', userCtrl.editUser);
+api.get('/', ctrl.getAll);
+api.put('/', ctrl.makeAdmin);
 
 module.exports = api;

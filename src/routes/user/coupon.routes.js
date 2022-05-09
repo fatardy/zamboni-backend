@@ -2,11 +2,8 @@ const express = require('express');
 
 const api = express();
 
-const userCtrl = require('../../controllers/coupon.controller').adminCtrl;
+const ctrl = require('../../controllers/coupon.controller').userCtrl;
 
-api.get('/', userCtrl.getAll);
-api.put('/', userCtrl.update);
-api.post('/', userCtrl.create);
-api.delete('/:coupId', userCtrl.delete);
+api.get('/', ctrl.getAll);
 
 module.exports = api;

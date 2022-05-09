@@ -8,5 +8,6 @@ api.get('/', ctrl.getAll);
 api.put('/', ctrl.update);
 api.post('/', ctrl.create);
 api.delete('/:coupId', ctrl.delete);
+api.post('/add', ctrl.addToUser);
 
 module.exports = api;

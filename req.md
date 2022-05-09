@@ -22,9 +22,9 @@
         [x] delete
     - trips
         [ ] view all
-        [ ] cancel
+        [-] cancel ?skip
     - invoice
-        [ ] create (trigger)
+        [x] create ?not trigger, app code
         [x] view all
         [-] delete ?skip
     - payment
@@ -65,8 +65,7 @@
         [x] create payment
         [-] view all payments ?detail on trip
     - coupon
-        [ ] view all coupons
-        [ ] use coupon
+        [x] view all coupons
 
 # frontend
     + admin

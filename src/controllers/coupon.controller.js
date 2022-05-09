@@ -5,7 +5,57 @@ const responseHelper = require('../helpers/response.helper');
 
 const logger = loggers.get('logger');
 
+const userCtrl = {
+
+    getAll: async (req, res) => {
+        try {
+            const [data] = await db.query(
+                `select *
+                from users_coupons a
+                join coupons b
+                    on a.coupId = b.coupId
+                where userId = ${res.locals.user.userId}`,
+            );
+            // console.log(data);
+
+            return responseHelper.successResponse(res, data == null ? [] : data);
+        } catch (err) {
+            logger.error(`coupon getAll > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
+
+};
+
 const adminCtrl = {
+
+    addToUser: async (req, res) => {
+        const { error, value } = schemaHelper.addToUser.validate(req.body);
+        if (error) {
+            return responseHelper.joiErrorResponse(res, error);
+        }
+        const {
+            coupId,
+            userId,
+        } = value;
+
+        try {
+            const q = `INSERT INTO users_coupons (
+                coupId,
+                userId
+            ) VALUES (
+                '${coupId}',
+                '${userId}'
+            );`;
+            console.log(q);
+            const [data] = await db.query(q);
+
+            return responseHelper.successResponse(res, data);
+        } catch (err) {
+            logger.error(`coupon create > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
 
     create: async (req, res) => {
         const { error, value } = schemaHelper.create.validate(req.body);
@@ -105,4 +155,5 @@ const adminCtrl = {
 
 module.exports = {
     adminCtrl,
+    userCtrl,
 };

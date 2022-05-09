@@ -26,7 +26,7 @@ CREATE TABLE users (
     country VARCHAR(50),
     deviceId VARCHAR(30),
     avatar VARCHAR(300),
-    userType CHAR(1),  -- discriminator 'A', 'C', 'B'
+    userType CHAR(1) DEFAULT 'C',  -- discriminator 'A', 'C', 'B'
 
     PRIMARY KEY (userId)
 );
@@ -112,7 +112,7 @@ CREATE TABLE locations_vehicleTypes (
 );
 
 CREATE TABLE coupons (
-    coupId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    coupId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT=1001,
     name VARCHAR(60) NOT NULL,
     percent DECIMAL(5, 2) NOT NULL,
     flatRate DECIMAL(5, 2) NOT NULL,

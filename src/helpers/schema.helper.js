@@ -50,6 +50,10 @@ const user = {
         avatar: trimStringAllowEmpty,
     }),
 
+    makeAdmin: Joi.object().keys({
+        userId: trimStringRequired,
+    }),
+
 };
 
 const location = {
@@ -124,6 +128,11 @@ const vehicle = {
 };
 
 const coupon = {
+
+    addToUser: Joi.object().keys({
+        coupId: trimStringRequired,
+        userId: trimStringRequired,
+    }),
 
     create: Joi.object().keys({
         name: trimStringAllowEmpty,
