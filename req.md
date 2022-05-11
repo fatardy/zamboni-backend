@@ -2,9 +2,9 @@
     - auth
         [x] login
     - users
-        [ ] mark user as admin
-        [ ] view all
-        [ ] block ?skip
+        [x] mark user as admin
+        [x] view all
+        [-] block ?skip
     - locations
         [x] create
         [x] view all
@@ -21,7 +21,7 @@
         [x] update
         [x] delete
     - trips
-        [ ] view all
+        [x] view all
         [-] cancel ?skip
     - invoice
         [x] create ?not trigger, app code
@@ -35,7 +35,7 @@
         [x] view
         [x] update
         [x] delete
-        [ ] add coupon for user/company
+        [x] add coupon for user/company
     - firms
         [x] create
         [x] view all

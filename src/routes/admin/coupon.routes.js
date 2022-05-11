@@ -9,5 +9,6 @@ api.put('/', ctrl.update);
 api.post('/', ctrl.create);
 api.delete('/:coupId', ctrl.delete);
 api.post('/add', ctrl.addToUser);
+api.get('/users', ctrl.getCouponsOfUsers);
 
 module.exports = api;

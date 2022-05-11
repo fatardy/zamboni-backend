@@ -8,11 +8,12 @@ const logger = loggers.get('logger');
 const userCtrl = {
 
     getAvailable: async (req, res) => {
+        const { locId } = req.params;
         try {
             const [data] = await db.query(
-                `select b.locId as 'locId', b.name as 'locName', 
+                `select b.locId, b.name as 'locName', 
                     c.vtId as 'vtId', c.name as 'vehName', c.rate, c.overFee, 
-                    a.vehId, a.make, a.model, a.licensePlate
+                    a.vehId, a.make, a.model, a.licensePlate, a.avatar
                 from locations_vehicleTypes as a
                 join locations as b
                     on a.locId = b.locId
@@ -22,7 +23,7 @@ const userCtrl = {
                     select vehId
                     from trips a
                     where a.inProgress = true    
-                );`,
+                ) AND a.locId = ${locId};`,
             );
             // console.log(data);
 
@@ -49,6 +50,7 @@ const adminCtrl = {
             licensePlate,
             locId,
             vtId,
+            avatar,
         } = value;
 
         try {
@@ -58,14 +60,16 @@ const adminCtrl = {
                 model,
                 licensePlate,
                 locId,
-                vtId
+                vtId,
+                avatar
             ) VALUES (
                 '${vehId}',
                 '${make || ''}',
                 '${model || ''}',
                 '${licensePlate || ''}',
                 ${locId},
-                ${vtId}
+                ${vtId},
+                '${avatar || ''}'
             );`;
             console.log(q);
             const [data] = await db.query(q);
@@ -115,7 +119,14 @@ const adminCtrl = {
     getAll: async (req, res) => {
         try {
             const [data] = await db.query(
-                'SELECT * FROM locations_vehicleTypes;',
+                `select a.vehId, a.created_at, a.make, a.model, a.licensePlate,
+                b.locId, b.name as 'locName', b.city,
+                c.vtId, c.name as 'vtName', c.rate, c.overFee
+                from locations_vehicleTypes a
+                join locations b
+                    on a.locId = b.locId
+                join vehicleTypes c
+                    on a.vtId = c.vtId`,
             );
             // console.log(data);
 

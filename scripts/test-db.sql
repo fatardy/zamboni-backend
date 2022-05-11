@@ -9,6 +9,9 @@ CREATE TABLE firms (
     name VARCHAR(50),
     regNo VARCHAR(10) NOT NULL,
 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     PRIMARY KEY (firmId)
 );
 
@@ -28,6 +31,10 @@ CREATE TABLE users (
     avatar VARCHAR(300),
     userType CHAR(1) DEFAULT 'C',  -- discriminator 'A', 'C', 'B'
 
+    -- do you need this everywhere else?
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     PRIMARY KEY (userId)
 );
 
@@ -35,6 +42,9 @@ CREATE TABLE users (
 CREATE TABLE admins (
     userId INT(10) UNSIGNED NOT NULL,
     isAdmin BOOLEAN NOT NULL DEFAULT true,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (userId),
     FOREIGN KEY (userId) REFERENCES users(userId)
@@ -47,6 +57,9 @@ CREATE TABLE customers (
     insurancePolicy VARCHAR(10) NOT NULL,
     insuranceCompany VARCHAR(30) NOT NULL,
 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     PRIMARY KEY (userId),
     FOREIGN KEY (userId) REFERENCES users(userId)
 );
@@ -56,6 +69,9 @@ CREATE TABLE bizCustomers (
     userId INT(10) UNSIGNED NOT NULL,
     empNo INT(10) NOT NULL UNIQUE, -- why unique;
     firmId INT(10) UNSIGNED NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (userId),
     FOREIGN KEY (userId) REFERENCES users(userId),
@@ -67,6 +83,9 @@ CREATE TABLE otps (
     otp INT(6) NOT NULL,
     userId INT(10) UNSIGNED NOT NULL UNIQUE,
 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     PRIMARY KEY (id),
     FOREIGN KEY (userId) REFERENCES users(userId)
 );
@@ -76,6 +95,9 @@ CREATE TABLE vehicleTypes (
     name VARCHAR(100) NOT NULL,
     rate DECIMAL(9, 2) NOT NULL,
     overFee DECIMAL(9, 2) NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (vtId)
 );
@@ -92,6 +114,9 @@ CREATE TABLE locations (
     stateName VARCHAR(50) NOT NULL, -- `state` seems to be a reserved keyword
     zipCode VARCHAR(8) NOT NULL,
     country VARCHAR(50) NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
     PRIMARY KEY (locId)
 );
@@ -105,6 +130,10 @@ CREATE TABLE locations_vehicleTypes (
     licensePlate VARCHAR(10) NOT NULL,
     locId INT(10) UNSIGNED NOT NULL,
     vtId INT(10) UNSIGNED NOT NULL,
+    avatar VARCHAR(300),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (vehId),
     FOREIGN KEY (locId) REFERENCES locations(locId),
@@ -112,12 +141,15 @@ CREATE TABLE locations_vehicleTypes (
 );
 
 CREATE TABLE coupons (
-    coupId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT=1001,
+    coupId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(60) NOT NULL,
-    percent DECIMAL(5, 2) NOT NULL,
-    flatRate DECIMAL(5, 2) NOT NULL,
+    percent DECIMAL(5, 2),
+    flatRate DECIMAL(5, 2),
     startDate DATETIME NOT NULL,
     endDate DATETIME NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (coupId)
 );
@@ -126,6 +158,9 @@ CREATE TABLE users_coupons (
     userId INT(10) UNSIGNED NOT NULL,
     coupId INT(10) UNSIGNED NOT NULL,
     coupType VARCHAR(30), -- what is this??
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (userId, coupId)
 );
@@ -145,6 +180,9 @@ CREATE TABLE trips (
     vehId VARCHAR(17) NOT NULL,
     inProgress BOOLEAN,
 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     PRIMARY KEY (tripId),
     FOREIGN KEY (userId) REFERENCES users(userId),
     FOREIGN KEY (pickLocId) REFERENCES locations(locId),
@@ -159,6 +197,9 @@ CREATE TABLE invoices (
     amount DECIMAL(10, 2),
     tripId INT(10) UNSIGNED NOT NULL,
 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     PRIMARY KEY (invId),
     FOREIGN KEY (tripId) REFERENCES trips(tripId)
 );
@@ -170,6 +211,9 @@ CREATE TABLE payments (
     method ENUM('VISA', 'MASTERCARD', 'RUPAY', 'OTHER'), -- CHANGE THIS!
     cardNo VARCHAR(16),
     invId INT(10) UNSIGNED NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (payId),
     FOREIGN KEY (invId) REFERENCES invoices(invId)
@@ -186,9 +230,21 @@ INSERT INTO admins (userId, isAdmin) VALUES (1, true);
 
 INSERT INTO locations (name, phoneNumber, email, street1, city, stateName, zipCode, country)
 VALUES (
-    "Fulton St2",
+    "Fulton St",
     1231231234,
-    "fulton@sex.com",
+    "fulton@check.com",
+    "asdf",
+    "Hyd",
+    "Mehdipatnam",
+    "123112",
+    "USA"
+);
+
+INSERT INTO locations (name, phoneNumber, email, street1, city, stateName, zipCode, country)
+VALUES (
+    "Borough Hall",
+    1231231234,
+    "fulton@check.com",
     "asdf",
     "Hyd",
     "Mehdipatnam",
@@ -217,36 +273,46 @@ VALUES (
     4
 );
 
-INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId)
+INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId, avatar)
 VALUES (
     "asdfqwerasdfqwert",
     "BMW",
     "3 Series",
     "ASDF1234QW",
     "1",
-    "1"
+    "1",
+    "https://images.unsplash.com/photo-1547038577-da80abbc4f19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1655&q=80"
 );
 
-INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId)
+INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId, avatar)
 VALUES (
     "asdfqwerasdfasdf",
     "BMW",
     "5 Series",
     "ZSDF1234QW",
     "1",
-    "1"
+    "1",
+    "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80"
 );
 
+INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId, avatar)
+VALUES (
+    "asdfqwerasdfyuio",
+    "BMW",
+    "3 Series",
+    "ASDF1234QW",
+    "2",
+    "1",
+    "https://images.unsplash.com/photo-1547038577-da80abbc4f19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1655&q=80"
+);
 
-tripId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    pickDate DATETIME NOT NULL,
-    dropDate DATETIME NOT NULL,
-    odoStart DECIMAL(10, 2) NOT NULL,
-    odoEnd DECIMAL(10, 2) NOT NULL,
-    odoLimit DECIMAL(10, 2) NOT NULL,
-    userId INT(10) UNSIGNED NOT NULL,
-    pickLocId INT(10) UNSIGNED NOT NULL,
-    dropLocId INT(10) UNSIGNED NOT NULL,
-    coupId INT(10) UNSIGNED NOT NULL,
-    vehId VARCHAR(17) NOT NULL,
-    inProgress BOOLEAN,
+INSERT INTO locations_vehicleTypes (vehId, make, model, licensePlate, locId, vtId, avatar)
+VALUES (
+    "asdfqwerasdfzxcv",
+    "BMW",
+    "5 Series",
+    "ZSDF1234QW",
+    "2",
+    "1",
+    "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80"
+);

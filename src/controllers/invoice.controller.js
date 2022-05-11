@@ -122,7 +122,10 @@ const adminCtrl = {
     getAll: async (req, res) => {
         try {
             const [data] = await db.query(
-                'SELECT * FROM invoices;',
+                `select *
+                from invoices a
+                join trips b
+                    on a.tripId = b.tripId`,
             );
             // console.log(data);
 

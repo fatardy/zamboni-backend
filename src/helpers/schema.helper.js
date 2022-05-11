@@ -113,6 +113,7 @@ const vehicle = {
         licensePlate: trimStringAllowEmpty,
         locId: trimStringRequired,
         vtId: trimStringRequired,
+        avatar: trimStringAllowEmpty,
     }),
 
     update: Joi.object().keys({
@@ -123,6 +124,7 @@ const vehicle = {
         licensePlate: trimStringAllowEmpty,
         locId: trimStringRequired,
         vtId: trimStringRequired,
+        avatar: trimStringAllowEmpty,
     }),
 
 };
@@ -137,6 +139,7 @@ const coupon = {
     create: Joi.object().keys({
         name: trimStringAllowEmpty,
         percent: numberAllowEmpty,
+        flatRate: numberAllowEmpty,
         startDate: trimStringRequired,
         endDate: trimStringRequired,
     }),
@@ -174,8 +177,9 @@ const trip = {
         pickDate: trimStringRequired,
         dropDate: trimStringRequired,
         odoStart: numberRequired,
+        odoEnd: numberAllowEmpty,
         odoLimit: numberRequired,
-        userId: trimStringRequired,
+        // userId: trimStringRequired,
         pickLocId: trimStringRequired,
         dropLocId: trimStringRequired,
         coupId: trimStringAllowEmpty,

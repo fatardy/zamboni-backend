@@ -11,6 +11,7 @@ const pool = mysql
         connectionLimit: process.env.DB_CONN_LIMIT,
         database: process.env.DB_NAME,
         debug: false, // process.env.DEBUG,
+        multipleStatements: true,
     })
     .promise();
 

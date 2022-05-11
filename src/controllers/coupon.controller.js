@@ -65,6 +65,7 @@ const adminCtrl = {
         const {
             name,
             percent,
+            flatRate,
             startDate,
             endDate,
         } = value;
@@ -73,11 +74,13 @@ const adminCtrl = {
             const q = `INSERT INTO coupons (
                 name,
                 percent,
+                flatRate,
                 startDate,
                 endDate
             ) VALUES (
                 '${name || ''}',
                 ${percent || 0},
+                ${flatRate || 0},
                 '${startDate}',
                 '${endDate}'
             );`;
@@ -128,6 +131,25 @@ const adminCtrl = {
         try {
             const [data] = await db.query(
                 'SELECT * FROM coupons;',
+            );
+            // console.log(data);
+
+            return responseHelper.successResponse(res, data == null ? [] : data);
+        } catch (err) {
+            logger.error(`coupon getAll > ${err}`);
+            return responseHelper.serverErrorResponse(res, err);
+        }
+    },
+
+    getCouponsOfUsers: async (req, res) => {
+        try {
+            const [data] = await db.query(
+                `select *
+                from users_coupons a
+                join users b
+                    on a.userId = b.userId
+                join coupons c
+                    on a.coupId = c.coupId`,
             );
             // console.log(data);
 

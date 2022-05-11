@@ -6,6 +6,6 @@ const locationCtrl = require('../../controllers/location.controller').userCtrl;
 const vehicleCtrl = require('../../controllers/vehicle.controller').userCtrl;
 
 api.get('/location/', locationCtrl.getAll);
-api.get('/vehicle/', vehicleCtrl.getAvailable);
+api.get('/vehicle/:locId', vehicleCtrl.getAvailable);
 
 module.exports = api;

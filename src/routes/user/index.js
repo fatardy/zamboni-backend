@@ -21,7 +21,7 @@ api.use(protectRoutes({ checkAdmin: false }));
 
 api.use('/user', user);
 api.use('/location', location);
-api.use('/vehicleType', vehicleType);
+api.use('/vehicle-type', vehicleType);
 api.use('/vehicle', vehicle);
 api.use('/coupon', coupon);
 api.use('/firm', firm);
