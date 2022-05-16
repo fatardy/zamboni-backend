@@ -1,5 +1,6 @@
 const { loggers } = require('winston');
 const { db } = require('../config/initializers/database');
+const { getMysqlDate } = require('../helpers/date.helper');
 const schemaHelper = require('../helpers/schema.helper').payment;
 const responseHelper = require('../helpers/response.helper');
 
@@ -13,7 +14,6 @@ const userCtrl = {
             return responseHelper.joiErrorResponse(res, error);
         }
         const {
-            payDate,
             amount,
             method,
             cardNo,
@@ -28,7 +28,7 @@ const userCtrl = {
                 cardNo,
                 invId
             ) VALUES (
-                '${payDate}',
+                '${getMysqlDate()}',
                 ${amount},
                 '${method}',
                 ${cardNo},

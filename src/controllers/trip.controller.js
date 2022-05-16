@@ -129,7 +129,10 @@ const userCtrl = {
             );
             console.log('invoice', invoice);
 
-            return responseHelper.successResponse(res, data);
+            return responseHelper.successResponse(res, {
+                invoice,
+                amount: totalAmount,
+            });
         } catch (err) {
             logger.error(`trip create > ${err}`);
             return responseHelper.serverErrorResponse(res, err);
@@ -139,28 +142,32 @@ const userCtrl = {
     getAllOfUser: async (req, res) => {
         const { userId } = res.locals.user;
 
-        const q = `
-            select a.tripId, a.pickDate, a.dropDate, a.odoStart, a.odoEnd, a.inProgress,
-                b.invId, b.invDate, b.amount,
-                c.locId as "pickLocId", c.name as "pickLocName",
-                d.locId as "dropLocId", d.name as "dropLocName",
-                e.payId, e.payDate, e.amount, e.method, e.cardNo
-            from trips as a
-            left join invoices as b
-                on a.tripId = b.tripId
-            join locations as c
-                on a.pickLocId = c.locId
-            join locations as d
-                on a.pickLocId = d.locId
-            left join payments as e
-                on b.invId = e.invId
-            where a.userId = ${userId}
-            order by a.inProgress desc;    
-        `;
+        // const q = `
+        //     select a.tripId, a.pickDate, a.dropDate, a.odoStart, a.odoEnd, a.inProgress,
+        //         b.invId, b.invDate, b.amount,
+        //         c.locId as "pickLocId", c.name as "pickLocName",
+        //         d.locId as "dropLocId", d.name as "dropLocName",
+        //         e.payId, e.payDate, e.amount as 'paidAmount', e.method, e.cardNo,
+        //         f.vehId, f.make, f.model
+        //     from trips as a
+        //     left join invoices as b
+        //         on a.tripId = b.tripId
+        //     join locations as c
+        //         on a.pickLocId = c.locId
+        //     join locations as d
+        //         on a.pickLocId = d.locId
+        //     left join payments as e
+        //         on b.invId = e.invId
+        //     join locations_vehicleTypes f
+        //         on a.vehId = f.vehId
+        //     where a.userId = ${userId}
+        //     order by a.inProgress desc;
+        // `;
+        const q = `call getAllTripsOfUser('${userId}');`;
 
         try {
-            const [data] = await db.query(q);
-            // console.log(data);
+            const [[data]] = await db.query(q);
+            console.log(data);
             return responseHelper.successResponse(res, data == null ? [] : data);
         } catch (err) {
             logger.error(`trip getAllOfUser > ${err}`);
@@ -200,26 +207,28 @@ const adminCtrl = {
 
     getAll: async (req, res) => {
         try {
-            const [data] = await db.query(
-                `select a.tripId, a.pickDate, a.dropDate, a.pickLocId, 
-                    a.dropLocId, a.odoStart, a.odoEnd, a.odoLimit,
-                    b.userId, b.firstName, b.lastName,
-                    c.vehId, c.make, c.model,
-                    e.invId, e.invDate, e.amount,
-                    f.payId, f.amount as 'paidAmount', f.method, f.cardNo
-                from trips a
-                join users b
-                    on a.userId = b.userId
-                join locations_vehicleTypes c
-                    on a.vehId = c.vehId
-                join vehicleTypes d
-                    on c.vtId = d.vtId
-                left join invoices e
-                    on a.tripId = e.tripId
-                left join payments f
-                    on e.invId = f.invId`,
-            );
-            // console.log(data);
+            // const q = `
+            //     select a.tripId, a.pickDate, a.dropDate, a.pickLocId,
+            //         a.dropLocId, a.odoStart, a.odoEnd, a.odoLimit,
+            //         b.userId, b.firstName, b.lastName,
+            //         c.vehId, c.make, c.model,
+            //         e.invId, e.invDate, e.amount,
+            //         f.payId, f.amount as 'paidAmount', f.method, f.cardNo
+            //     from trips a
+            //     join users b
+            //         on a.userId = b.userId
+            //     join locations_vehicleTypes c
+            //         on a.vehId = c.vehId
+            //     join vehicleTypes d
+            //         on c.vtId = d.vtId
+            //     left join invoices e
+            //         on a.tripId = e.tripId
+            //     left join payments f
+            //         on e.invId = f.invId;
+            // `;
+            const q = 'call adminGetAllTrips();';
+            const [[data]] = await db.query(q);
+            console.log(data);
 
             return responseHelper.successResponse(res, data == null ? [] : data);
         } catch (err) {

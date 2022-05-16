@@ -3,6 +3,7 @@ const path = require('path');
 
 // const fileWithPath = path.join(__dirname, 'create-database.sql');
 const fileWithPath = 'test-db.sql';
+// const fileWithPath = 'db-for-report.sql'
 // console.log(fileWithPath);
 cp.exec(`mysql -u ardy -pasdfQWER12# < ${fileWithPath}`, (error, stdout, stderr) => {
     if (error) {

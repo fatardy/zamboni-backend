@@ -10,21 +10,23 @@ const userCtrl = {
     getAvailable: async (req, res) => {
         const { locId } = req.params;
         try {
-            const [data] = await db.query(
-                `select b.locId, b.name as 'locName', 
-                    c.vtId as 'vtId', c.name as 'vehName', c.rate, c.overFee, 
-                    a.vehId, a.make, a.model, a.licensePlate, a.avatar
-                from locations_vehicleTypes as a
-                join locations as b
-                    on a.locId = b.locId
-                join vehicleTypes as c
-                    on a.vtId = c.vtId
-                where a.vehId not in (
-                    select vehId
-                    from trips a
-                    where a.inProgress = true    
-                ) AND a.locId = ${locId};`,
-            );
+            // const q = `
+            //     select b.locId, b.name as 'locName',
+            //         c.vtId as 'vtId', c.name as 'vehName', c.rate, c.overFee,
+            //         a.vehId, a.make, a.model, a.licensePlate, a.avatar
+            //     from locations_vehicleTypes as a
+            //     join locations as b
+            //         on a.locId = b.locId
+            //     join vehicleTypes as c
+            //         on a.vtId = c.vtId
+            //     where a.vehId not in (
+            //         select vehId
+            //         from trips a
+            //         where a.inProgress = true
+            //     ) AND a.locId = ${locId};
+            // `;
+            const q = `call getAvailableVehiclesBy('${locId}')`;
+            const [[data]] = await db.query(q);
             // console.log(data);
 
             return responseHelper.successResponse(res, data);

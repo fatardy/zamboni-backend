@@ -1,3 +1,5 @@
+const { sanitize } = require('string-sanitizer');
+
 const Joi = require('@hapi/joi');
 const { trim } = require('lodash');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -29,7 +31,7 @@ const auth = {
     verifyOtp: Joi.object().keys({
         email: email.lowercase().required(),
         deviceId: trimStringRequired,
-        otp: trimStringRequired,
+        otp: sanitize(trimStringRequired),
     }),
 
 };
@@ -37,16 +39,16 @@ const auth = {
 const user = {
 
     edit: Joi.object().keys({
-        firstName: trimStringAllowEmpty,
-        lastName: trimStringAllowEmpty,
+        firstName: sanitize(trimStringAllowEmpty),
+        lastName: sanitize(trimStringAllowEmpty),
         phoneNumber: numberAllowEmpty,
-        street1: trimStringAllowEmpty,
-        street2: trimStringAllowEmpty,
-        city: trimStringAllowEmpty,
-        stateName: trimStringAllowEmpty,
-        zipCode: trimStringAllowEmpty,
-        country: trimStringAllowEmpty,
-        deviceId: trimStringAllowEmpty,
+        street1: sanitize(trimStringAllowEmpty),
+        street2: sanitize(trimStringAllowEmpty),
+        city: sanitize(trimStringAllowEmpty),
+        stateName: sanitize(trimStringAllowEmpty),
+        zipCode: sanitize(trimStringAllowEmpty),
+        country: sanitize(trimStringAllowEmpty),
+        deviceId: sanitize(trimStringAllowEmpty),
         avatar: trimStringAllowEmpty,
     }),
 
@@ -198,9 +200,9 @@ const trip = {
 const payment = {
 
     create: Joi.object().keys({
-        payDate: trimStringRequired,
+        // payDate: trimStringRequired,
         amount: numberRequired,
-        method: trimStringRequired,
+        method: sanitize(trimStringRequired),
         cardNo: numberRequired,
         invId: trimStringRequired,
     }),

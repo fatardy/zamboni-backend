@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const http = require('http');
 const morgan = require('morgan');
 const winston = require('winston');
+const sanitize = require('sanitize');
 
 const constants = require('../constants');
 const userApi = require('../../routes/user');
@@ -58,6 +59,8 @@ function main() {
         app.use(bodyParserErrorChecker);
 
         app.use(helmet());
+
+        app.use(sanitize.middleware);
 
         app.use(morgan('combined', {
             stream: { write: (msg) => morganLogger.info(msg.trim()) },
